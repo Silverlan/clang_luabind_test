@@ -42,16 +42,27 @@ jobs:
         mkdir -p gcc
         tar -xf gcc.tar.xz -C gcc --strip-components 1
 
+    - name: Download CMake
+      run: |
+        URL="https://github.com/Silverlan/CMake/releases/download/2025-12-23/windows_x64.tar.xz"
+        curl -L "$URL" -o cmake.tar.xz
+
+    - name: Extract and Set Path
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/cmake-custom
+        tar -xf cmake.tar.xz -C $GITHUB_WORKSPACE/cmake-custom --strip-components 1
+        
+        # Add the bin directory to the GitHub Path
+        echo "$GITHUB_WORKSPACE/cmake-custom/bin" >> $GITHUB_PATH
+
+    - name: Verify CMake Version
+      run: cmake --version
+
     - name: Setup Path
       run: |
         echo "$(pwd)/llvm-dist/bin" >> $GITHUB_PATH
 
         mkdir build
-
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '4.2.1'
 
     - name: Build
       run: |
