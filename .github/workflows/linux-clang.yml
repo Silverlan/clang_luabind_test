@@ -32,6 +32,10 @@ jobs:
         mkdir -p llvm-dist
         tar -xf llvm.tar.xz -C llvm-dist --strip-components 1
 
+    - name: Search for libstdc++.modules.json
+      run: |
+        sudo find / -name "libstdc++.modules.json" 2>/dev/null
+
     - name: Download GCC-15 (Required for libstdc++.modules.json)
       run: |
         URL="https://github.com/Silverlan/test_gcc15/releases/download/2025-11-17/gcc-15.2.0.tar.xz"
