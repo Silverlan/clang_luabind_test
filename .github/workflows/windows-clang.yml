@@ -41,7 +41,6 @@ jobs:
         # Add to GITHUB_PATH so subsequent steps see it
         echo "$LLVM_BIN_WIN" >> $GITHUB_PATH
 
-        cd test_program
         mkdir build
 
     - name: Setup cmake
