@@ -27,6 +27,10 @@ target_include_directories(
 target_link_libraries(test_program PRIVATE ${LUA_LIBRARIES})
 target_link_libraries(test_program PUBLIC luabind)
 
+target_compile_features(test_program PRIVATE cxx_std_23)
+set_target_properties(test_program PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(test_program PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 if(UNIX)
     set_target_properties(test_program PROPERTIES INSTALL_RPATH "\$ORIGIN")
     target_compile_options(test_program PUBLIC -stdlib=libstdc++)
