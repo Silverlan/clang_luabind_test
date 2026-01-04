@@ -1,10 +1,11 @@
-name: Windows Clang Build (Bash)
+name: Windows Clang Build
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:

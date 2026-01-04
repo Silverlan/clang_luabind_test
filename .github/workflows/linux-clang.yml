@@ -2,9 +2,9 @@ name: Ubuntu Clang Build
 
 on:
   push:
-    branches: [ "undefined-symbol" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "undefined-symbol" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -32,15 +32,15 @@ jobs:
         mkdir -p llvm-dist
         tar -xf llvm.tar.xz -C llvm-dist --strip-components 1
 
-    - name: Download GCC-15 (Required for libstdc++.modules.json)
+    - name: Download GCC-16 (Required for libstdc++.modules.json)
       run: |
-        URL="https://github.com/Silverlan/test_gcc15/releases/download/2025-11-17/gcc-15.2.0.tar.xz"
+        URL="https://github.com/Silverlan/gcc_prebuilt/releases/download/2025-12-15/gcc-16-opt.tar.xz"
         curl -L "$URL" -o gcc.tar.xz
 
-    - name: Extract GCC-15
+    - name: Extract GCC-16
       run: |
-        mkdir -p gcc-15
-        tar -xf gcc.tar.xz -C gcc-15 --strip-components 1
+        mkdir -p gcc
+        tar -xf gcc.tar.xz -C gcc --strip-components 1
 
     - name: Setup Path
       run: |
@@ -62,7 +62,7 @@ jobs:
           -DCMAKE_C_COMPILER="$root/llvm-dist/bin/clang" \
           -DCMAKE_CXX_COMPILER="$root/llvm-dist/bin/clang++" \
           -DCMAKE_INSTALL_PREFIX:PATH="$root/install" \
-          -DCMAKE_CXX_STDLIB_MODULES_JSON="$root/gcc-15/lib64/libstdc++.modules.json" \
+          -DCMAKE_CXX_STDLIB_MODULES_JSON="$root/gcc/lib64/libstdc++.modules.json" \
           -DLUA_INCLUDE_DIR="$root/luajit/include/" \
           -DLUA_LIBRARY="$root/luajit/lib/libluajit-p.so" \
           -DCMAKE_CXX_SCAN_FOR_MODULES=1 \
