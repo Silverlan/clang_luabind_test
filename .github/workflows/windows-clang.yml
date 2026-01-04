@@ -61,7 +61,9 @@ jobs:
     - name: ls
       run: |
         ls -R
-        
+
+        ls -l /d/a/clang_luabind_test/clang_luabind_test/luajit/lib/luajit.lib
+
     - name: Build
       run: |
         root=$(pwd)
