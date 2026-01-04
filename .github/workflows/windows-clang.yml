@@ -58,6 +58,10 @@ jobs:
       with:
         arch: amd64
 
+    - name: ls
+      run: |
+        ls -R
+        
     - name: Build
       run: |
         root=$(pwd)
