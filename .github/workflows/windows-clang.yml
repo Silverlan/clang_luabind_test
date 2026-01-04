@@ -74,6 +74,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
         ../cmake/bin/cmake.exe --build .
         ../cmake/bin/cmake.exe --install .
+        cp "$root/luajit/bin/lua51.dll" "$root/install/"
 
     - name: Run
       run: |
