@@ -58,12 +58,6 @@ jobs:
       with:
         arch: amd64
 
-    - name: ls
-      run: |
-        ls -R
-
-        ls -l /d/a/clang_luabind_test/clang_luabind_test/luajit/lib/luajit.lib
-
     - name: Build
       run: |
         root=$(pwd)
@@ -74,7 +68,7 @@ jobs:
           -DCMAKE_CXX_COMPILER="$root/llvm-dist/bin/clang++.exe" \
           -DCMAKE_INSTALL_PREFIX:PATH="$root/install" \
           -DLUA_INCLUDE_DIR="$root/luajit/include/" \
-          -DLUA_LIBRARIES="$root/luajit/lib/luajit.lib;$root/luajit/lib/lua51.lib" \
+          -DLUA_LIBRARIES="$root/luajit/lib/lua51.lib" \
           -DCMAKE_CXX_SCAN_FOR_MODULES=1 \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
           -DCMAKE_BUILD_TYPE=Release
