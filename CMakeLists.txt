@@ -29,6 +29,8 @@ target_link_libraries(test_program PUBLIC luabind)
 
 if(UNIX)
     set_target_properties(test_program PROPERTIES INSTALL_RPATH "\$ORIGIN")
+    target_compile_options(test_program PUBLIC -stdlib=libstdc++)
+    target_link_options(test_program PUBLIC -stdlib=libstdc++)
 endif()
 
 install(TARGETS test_program DESTINATION .)
