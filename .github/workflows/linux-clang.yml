@@ -1,0 +1,64 @@
+name: Ubuntu Clang Build
+
+on:
+  push:
+    branches: [ "undefined-symbol" ]
+  pull_request:
+    branches: [ "undefined-symbol" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build libxcb-cursor0
+
+    - name: Download LLVM
+      run: |
+        URL="https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/LLVM-21.1.8-Linux-X64.tar.xz"
+        curl -L "$URL" -o llvm.tar.xz
+
+    - name: Extract LLVM
+      run: |
+        mkdir -p llvm-dist
+        tar -xf llvm.tar.xz -C llvm-dist --strip-components 1
+
+    - name: Setup Path
+      run: |
+        echo "$(pwd)/llvm-dist/bin" >> $GITHUB_PATH
+
+        cd test_program
+        mkdir build
+
+    - name: Build
+      run: |
+        root=$(pwd)
+        cd test_program/build
+        cmake -S .. -B . \
+          -G "Ninja" \
+          -DCMAKE_C_COMPILER="$root/llvm-dist/bin/clang" \
+          -DCMAKE_CXX_COMPILER="$root/llvm-dist/bin/clang++" \
+          -DCMAKE_INSTALL_PREFIX:PATH="$root/install" \
+          -DCMAKE_CXX_STDLIB_MODULES_JSON="/usr/lib/libstdc++.modules.json" \
+          -DLUA_INCLUDE_DIR="/mnt/LinuxData/pragma_develop/deps/staging/luajit/include/" \
+          -DLUA_LIBRARY="/mnt/LinuxData/pragma_develop/deps/staging/luajit/lib/libluajit-p.so" \
+          -DCMAKE_CXX_SCAN_FOR_MODULES=1 \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+          -DCMAKE_BUILD_TYPE=Release
+        cmake --build .
+        cmake --install .
+
+    - name: Run
+      run: |
+        root=$(pwd)
+        cd test_program/build
+        $root/install/test_program

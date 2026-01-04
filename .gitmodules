@@ -1,0 +1,3 @@
+[submodule "luabind"]
+	path = luabind
+	url = https://github.com/Silverlan/luabind-deboostified
