@@ -39,8 +39,8 @@ jobs:
 
     - name: Extract GCC-15
       run: |
-        mkdir -p gcc
-        tar -xf gcc.tar.xz -C gcc --strip-components 1
+        mkdir -p gcc-15
+        tar -xf gcc.tar.xz -C gcc-15 --strip-components 1
 
     - name: Setup Path
       run: |
@@ -62,7 +62,7 @@ jobs:
           -DCMAKE_C_COMPILER="$root/llvm-dist/bin/clang" \
           -DCMAKE_CXX_COMPILER="$root/llvm-dist/bin/clang++" \
           -DCMAKE_INSTALL_PREFIX:PATH="$root/install" \
-          -DCMAKE_CXX_STDLIB_MODULES_JSON="$root/gcc/lib64/libstdc++.modules.json" \
+          -DCMAKE_CXX_STDLIB_MODULES_JSON="$root/gcc-15/lib64/libstdc++.modules.json" \
           -DLUA_INCLUDE_DIR="$root/luajit/include/" \
           -DLUA_LIBRARY="$root/luajit/lib/libluajit-p.so" \
           -DCMAKE_CXX_SCAN_FOR_MODULES=1 \
