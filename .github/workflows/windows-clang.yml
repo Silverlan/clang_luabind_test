@@ -43,16 +43,21 @@ jobs:
 
         mkdir build
 
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '4.2.1'
+    - name: Download CMake
+      run: |
+        URL="https://github.com/Silverlan/CMake/releases/download/2025-12-23/windows_x64.tar.xz"
+        curl -L "$URL" -o cmake.tar.xz
+
+    - name: Extract CMake
+      run: |
+        mkdir -p cmake
+        tar -xf cmake.tar.xz -C cmake --strip-components 1
 
     - name: Build
       run: |
         root=$(pwd)
         cd build
-        cmake -S .. -B . \
+        ../cmake/bin/cmake.exe -S .. -B . \
           -G "Ninja" \
           -DCMAKE_C_COMPILER="$root/llvm-dist/bin/clang.exe" \
           -DCMAKE_CXX_COMPILER="$root/llvm-dist/bin/clang++.exe" \
@@ -62,8 +67,8 @@ jobs:
           -DCMAKE_CXX_SCAN_FOR_MODULES=1 \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
           -DCMAKE_BUILD_TYPE=Release
-        cmake --build .
-        cmake --install .
+        ../cmake/bin/cmake.exe --build .
+        ../cmake/bin/cmake.exe --install .
 
     - name: Run
       run: |
