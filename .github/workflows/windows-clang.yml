@@ -53,6 +53,11 @@ jobs:
         mkdir -p cmake
         tar -xf cmake.tar.xz -C cmake --strip-components 1
 
+    - name: Setup Visual Studio Developer Prompt
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64
+
     - name: Build
       run: |
         root=$(pwd)
